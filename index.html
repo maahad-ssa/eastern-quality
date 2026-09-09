@@ -237,6 +237,56 @@
       </div>
 
       <p class="contact-note reveal">Let&rsquo;s discuss tailored logistics solutions that move your business forward.</p>
+
+      <div class="contact-form-wrap reveal">
+        <h3 class="form-heading">Send us a message</h3>
+        <form id="contactForm" class="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
+
+          <!-- Get your free access key at https://web3forms.com and paste it below -->
+          <input type="hidden" name="access_key" value="23eab74b-f215-4fce-913f-f03bf192a53a">
+          <input type="hidden" name="subject" id="cf-email-subject" value="New website enquiry — Eastern Renaissance">
+          <input type="hidden" name="from_name" value="Eastern Renaissance Website">
+          <input type="hidden" name="redirect" value="false">
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="cf-name">Name</label>
+              <input type="text" id="cf-name" name="name" autocomplete="name" required maxlength="100">
+            </div>
+            <div class="form-field">
+              <label for="cf-email">Email</label>
+              <input type="email" id="cf-email" name="email" autocomplete="email" required maxlength="150">
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="cf-subject">Subject</label>
+            <input type="text" id="cf-subject" name="enquiry_subject" required maxlength="150">
+          </div>
+
+          <div class="form-field">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="message" rows="5" required maxlength="4000"></textarea>
+          </div>
+
+          <!-- Honeypot: hidden from real visitors, invisible bots often fill it in -->
+          <div class="form-field hp-field" aria-hidden="true">
+            <label for="cf-website">Website</label>
+            <input type="text" id="cf-website" name="botcheck" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form-field captcha-field">
+            <label for="cf-captcha" id="captchaLabel">Human check: what is 3 + 4?</label>
+            <input type="text" id="cf-captcha" name="captcha_answer" required inputmode="numeric" autocomplete="off">
+            <input type="hidden" id="cf-captcha-a" name="captcha_a" value="3">
+            <input type="hidden" id="cf-captcha-b" name="captcha_b" value="4">
+          </div>
+
+          <button type="submit" class="btn btn-primary form-submit" id="cfSubmit">Send message</button>
+
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
     </div>
   </section>
 
