@@ -70,6 +70,82 @@ document.addEventListener('DOMContentLoaded', function () {
   setActiveLink();
   window.addEventListener('scroll', setActiveLink, { passive: true });
 
+  /* ---- Contact form: dynamic human-check + secure submit ---- */
+  var contactForm = document.getElementById('contactForm');
+
+  if (contactForm) {
+    var captchaLabel = document.getElementById('captchaLabel');
+    var captchaAInput = document.getElementById('cf-captcha-a');
+    var captchaBInput = document.getElementById('cf-captcha-b');
+    var captchaAnswerInput = document.getElementById('cf-captcha');
+    var submitBtn = document.getElementById('cfSubmit');
+    var statusEl = document.getElementById('formStatus');
+
+    function newCaptcha() {
+      var a = Math.floor(Math.random() * 8) + 1;   // 1-8
+      var b = Math.floor(Math.random() * 8) + 1;   // 1-8
+      captchaAInput.value = a;
+      captchaBInput.value = b;
+      captchaLabel.textContent = 'Human check: what is ' + a + ' + ' + b + '?';
+      captchaAnswerInput.value = '';
+    }
+    newCaptcha();
+
+    function setStatus(message, type) {
+      statusEl.textContent = message;
+      statusEl.className = 'form-status' + (type ? ' ' + type : '');
+    }
+
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Client-side check mirrors the server-side check for instant feedback
+      var expected = parseInt(captchaAInput.value, 10) + parseInt(captchaBInput.value, 10);
+      var given = parseInt(captchaAnswerInput.value, 10);
+      if (isNaN(given) || given !== expected) {
+        setStatus('That answer doesn\u2019t look right — please try the sum again.', 'error');
+        newCaptcha();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      setStatus('Sending your message\u2026');
+
+      // Build a descriptive email subject line from the visitor's chosen subject
+      var subjectField = document.getElementById('cf-subject');
+      var emailSubjectField = document.getElementById('cf-email-subject');
+      if (subjectField && emailSubjectField) {
+        emailSubjectField.value = 'New website enquiry: ' + subjectField.value;
+      }
+
+      var formData = new FormData(contactForm);
+
+      fetch(contactForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(function (res) { return res.json().catch(function () { return { success: false }; }); })
+        .then(function (data) {
+          if (data && data.success) {
+            setStatus('Thank you \u2014 your message has been sent. We\u2019ll be in touch shortly.', 'success');
+            contactForm.reset();
+            newCaptcha();
+          } else {
+            setStatus((data && data.message) || 'Something went wrong. Please try again or email us directly.', 'error');
+            newCaptcha();
+          }
+        })
+        .catch(function () {
+          setStatus('Could not send right now. Please try again shortly or email us directly.', 'error');
+          newCaptcha();
+        })
+        .finally(function () {
+          submitBtn.disabled = false;
+        });
+    });
+  }
+
   /* ---- Back to top button ---- */
   var backToTop = document.getElementById('backToTop');
 
