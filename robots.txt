@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.eastern-quality.com/sitemap.xml
