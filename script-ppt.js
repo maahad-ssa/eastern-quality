@@ -43,7 +43,7 @@ let isFullscreen = false;
    SHOW SLIDE
 ========================================= */
 
-function showSlide(index) {
+function showSlide(index-ppt) {
 
     // Make sure the index stays within the slide range
     if (index >= slides.length) {
@@ -54,7 +54,7 @@ function showSlide(index) {
         index = slides.length - 1;
     }
 
-    currentSlide = index;
+    currentSlide = index-ppt;
 
 
     /* Remove active class from all slides */
@@ -161,7 +161,7 @@ dots.forEach((dot, index) => {
 
     dot.addEventListener("click", () => {
 
-        showSlide(index);
+        showSlide(index-ppt);
 
         restartAutoSlide();
 
